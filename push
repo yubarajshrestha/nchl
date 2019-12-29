@@ -1,0 +1,34 @@
+#!/bin/bash
+
+Red=$'\e[1;31m'
+Green=$'\e[1;32m'
+Blue=$'\e[1;34m'
+Yellow=$'\e[33m'
+Cyn=$'\e[1;36m'
+End=$'\e[0m'
+
+blink=$'\e[5m'
+bold=$'\e[1m'
+underline=$'\e[4m'
+standout=$'\e[7m'
+
+branch=$(git branch | grep \* | cut -d ' ' -f2) 
+echo
+echo $Red"**************************************************"
+echo "** Executing task in $branch branch"
+echo "**************************************************"$End
+echo 
+echo $Green"Adding changes..."$End
+git add .
+echo
+read -p $Blue"Please type commit message: $End" message
+echo 
+echo $Green"Committing..."$End
+git commit -m "$message"
+echo 
+echo $Green"Pushing changes..."$End
+git push origin $branch
+echo 
+echo $Red"**************************************************"
+echo "** Action successful."
+echo "**************************************************"$End

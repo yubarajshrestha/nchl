@@ -1,0 +1,12 @@
+{
+    "name": "yubarajshrestha/nchl",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yubaraj Shretha",
+            "email": "companion.krish@outlook.com"
+        }
+    ],
+    "require": {}
+}
