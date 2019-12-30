@@ -26,6 +26,8 @@ class NchlServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->publishes([
+            __DIR__.'/Config/nchl.php' =>  config_path('nchl.php'),
+        ], 'nchl');
     }
 }
