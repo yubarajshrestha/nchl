@@ -249,6 +249,22 @@ class Nchl {
         $this->certificate = $certificate;
     }
 
+    public function getValidationUrl(): string {
+        try {
+            return config('nchl')['validation_url'];
+        } catch(\Exception $e) {
+            return 'https://www.connectips.com/connectipswebws/api/creditor/validatetxn';
+        }
+    }
+
+    public function getTransactionDetailUrl(): string {
+        try {
+            return config('nchl')['transaction_detail_url'];
+        } catch(\Exception $e) {
+            return 'https://www.connectips.com/connectipswebws/api/creditor/gettxndetail';
+        }
+    }
+
     /**
      * @param string $string
      * @return string

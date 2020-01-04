@@ -39,6 +39,10 @@ class NchlException extends Exception
         return (new static($field))->withSubject($subject);
     }
 
+    public static function clientError($subject, $field) {
+        return (new static($field))->withSubject($subject);
+    }
+
     /**
      * @return NchlException
      */
