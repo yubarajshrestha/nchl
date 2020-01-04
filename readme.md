@@ -5,6 +5,7 @@ Connect IPS payment gateway package.
 [![Total Downloads](https://poser.pugx.org/yubarajshrestha/nchl/downloads)](https://packagist.org/packages/yubarajshrestha/nchl)
 [![Latest Unstable Version](https://poser.pugx.org/yubarajshrestha/nchl/v/unstable)](https://packagist.org/packages/yubarajshrestha/nchl)
 [![License](https://poser.pugx.org/yubarajshrestha/nchl/license)](https://packagist.org/packages/yubarajshrestha/nchl)
+![Build](https://travis-ci.com/yubarajshrestha/nchl.svg?branch=master)
 
 ### Installation
 Require this package with composer.
