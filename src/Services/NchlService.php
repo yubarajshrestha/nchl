@@ -9,7 +9,6 @@ use YubarajShrestha\NCHL\Nchl;
 
 class NchlService
 {
-
     /**
      * @var Nchl
      */
@@ -60,6 +59,7 @@ class NchlService
         $string = "MERCHANTID={$this->nchl->getMerchantId()},APPID={$this->nchl->getAppId()},APPNAME={$this->nchl->getAppName()},TXNID={$this->nchl->getTxnId()},TXNAMT={$this->nchl->getTxnAmount()}";
         $token = $this->nchl->token($string);
         $client = new Client();
+
         try {
             $response = $client->request('POST', $this->nchl->getValidationUrl(), [
                 'auth' => [$this->nchl->getAppId(), $this->nchl->getPassword()],
@@ -68,16 +68,17 @@ class NchlService
                     'appId'         => $this->nchl->getAppId(),
                     'referenceId'   => $this->nchl->getTxnId(),
                     'txnAmt'        => $this->nchl->getTxnAmount(),
-                    'token'         => $token
-                ]
+                    'token'         => $token,
+                ],
             ]);
             // TODO: Handle Payment Validation Response
         } catch (ClientException $e) {
             $message = $e->getResponse()->getReasonPhrase();
             $code = $e->getResponse()->getStatusCode();
-            if($code == 404) {
+            if ($code == 404) {
                 $message = 'The requested url not found!';
             }
+
             throw NchlException::clientError($this, $message);
         }
     }
@@ -90,6 +91,7 @@ class NchlService
         $string = "MERCHANTID={$this->nchl->getMerchantId()},APPID={$this->nchl->getAppId()},APPNAME={$this->nchl->getAppName()},TXNID={$this->nchl->getTxnId()},TXNAMT={$this->nchl->getTxnAmount()}";
         $token = $this->nchl->token($string);
         $client = new Client();
+
         try {
             $response = $client->request('POST', $this->nchl->getTransactionDetailUrl(), [
                 'auth' => [$this->nchl->getAppId(), $this->nchl->getPassword()],
@@ -98,18 +100,18 @@ class NchlService
                     'appId'         => $this->nchl->getAppId(),
                     'referenceId'   => $this->nchl->getTxnId(),
                     'txnAmt'        => $this->nchl->getTxnAmount(),
-                    'token'         => $token
-                ]
+                    'token'         => $token,
+                ],
             ]);
             // TODO: Handle Transaction Detail Response
         } catch (ClientException $e) {
             $message = $e->getResponse()->getReasonPhrase();
             $code = $e->getResponse()->getStatusCode();
-            if($code == 404) {
+            if ($code == 404) {
                 $message = 'The requested url not found!';
             }
+
             throw NchlException::clientError($this, $message);
         }
     }
-
 }

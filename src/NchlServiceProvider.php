@@ -1,6 +1,7 @@
 <?php
 
 namespace YubarajShrestha\NCHL;
+
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use YubarajShrestha\NCHL\Services\NchlService;
@@ -33,11 +34,13 @@ class NchlServiceProvider extends ServiceProvider
             $template .= "<input type='text' name='APPID' id='APPID' value='".$config['app_id']."'/>";
             $template .= "<input type='text' name='APPNAME' id='APPNAME' value='".$config['app_name']."'/>";
             $template .= "<input type='text' name='TXNCRNCY' id='TXNCRNCY' value='".$config['txn_currency']."'/>";
+
             return $template;
         });
 
         Blade::directive('EndNchl', function ($string) {
             $template = "<input type='submit' class='nchl-button' value='Submit'></form>";
+
             return $template;
         });
 
