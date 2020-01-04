@@ -2,14 +2,14 @@
 
 namespace YubarajShrestha\NCHL\Services;
 
-use \GuzzleHttp\Client;
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\Request;
 use YubarajShrestha\NCHL\Exceptions\NchlException;
 use YubarajShrestha\NCHL\Nchl;
 
-class NchlService {
-
+class NchlService
+{
     /**
      * @var Nchl
      */
@@ -25,19 +25,23 @@ class NchlService {
 
     /**
      * @param array $config
+     *
      * @return $this
      */
-    public function __init(array $config) {
+    public function __init(array $config)
+    {
         $this->nchl = new Nchl($config);
 //        session()->flash('nchl', $this->nchl->__serialize());
         return $this;
     }
 
     /**
-     * @return string
      * @throws NchlException
+     *
+     * @return string
      */
-    public function token() {
+    public function token()
+    {
         return $this->nchl->token();
         /*$client = new Client();
         $res = $client->request('GET', 'https://api.github.com/user', [
@@ -51,26 +55,31 @@ class NchlService {
     /**
      * @throws NchlException
      */
-    public function paymentValidate() {
+    public function paymentValidate()
+    {
         $string = "MERCHANTID={$this->nchl->getMerchantId()},APPID={$this->nchl->getAppId()},APPNAME={$this->nchl->getAppName()},TXNID={$this->nchl->getTxnId()},TXNAMT={$this->nchl->getTxnAmount()}";
         $token = $this->nchl->token($string);
         $client = new Client();
+
         try {
             $response = $client->request('POST', $this->nchl->getValidationUrl(), [
                 'auth' => [$this->nchl->getAppId(), $this->nchl->getPassword()],
                 'json' => [
-                    'merchantId' => $this->nchl->getMerchantId(),
-                    'appId' => $this->nchl->getAppId(),
+                    'merchantId'  => $this->nchl->getMerchantId(),
+                    'appId'       => $this->nchl->getAppId(),
                     'referenceId' => $this->nchl->getTxnId(),
-                    'txnAmt' => $this->nchl->getTxnAmount(),
-                    'token' => $token
-                ]
+                    'txnAmt'      => $this->nchl->getTxnAmount(),
+                    'token'       => $token,
+                ],
             ]);
             // TODO: Handle Payment Validation Response
         } catch (ClientException $e) {
             $message = $e->getResponse()->getReasonPhrase();
             $code = $e->getResponse()->getStatusCode();
-            if($code == 404) $message = "The requested url not found!";
+            if ($code == 404) {
+                $message = 'The requested url not found!';
+            }
+
             throw NchlException::clientError($this, $message);
         }
     }
@@ -78,28 +87,32 @@ class NchlService {
     /**
      * @throws NchlException
      */
-    public function paymentDetails() {
+    public function paymentDetails()
+    {
         $string = "MERCHANTID={$this->nchl->getMerchantId()},APPID={$this->nchl->getAppId()},APPNAME={$this->nchl->getAppName()},TXNID={$this->nchl->getTxnId()},TXNAMT={$this->nchl->getTxnAmount()}";
         $token = $this->nchl->token($string);
         $client = new Client();
+
         try {
             $response = $client->request('POST', $this->nchl->getTransactionDetailUrl(), [
                 'auth' => [$this->nchl->getAppId(), $this->nchl->getPassword()],
                 'json' => [
-                    'merchantId' => $this->nchl->getMerchantId(),
-                    'appId' => $this->nchl->getAppId(),
+                    'merchantId'  => $this->nchl->getMerchantId(),
+                    'appId'       => $this->nchl->getAppId(),
                     'referenceId' => $this->nchl->getTxnId(),
-                    'txnAmt' => $this->nchl->getTxnAmount(),
-                    'token' => $token
-                ]
+                    'txnAmt'      => $this->nchl->getTxnAmount(),
+                    'token'       => $token,
+                ],
             ]);
             // TODO: Handle Transaction Detail Response
         } catch (ClientException $e) {
             $message = $e->getResponse()->getReasonPhrase();
             $code = $e->getResponse()->getStatusCode();
-            if($code == 404) $message = "The requested url not found!";
+            if ($code == 404) {
+                $message = 'The requested url not found!';
+            }
+
             throw NchlException::clientError($this, $message);
         }
     }
-
 }
