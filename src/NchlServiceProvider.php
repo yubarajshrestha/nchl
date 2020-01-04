@@ -3,7 +3,6 @@
 namespace YubarajShrestha\NCHL;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use phpDocumentor\Reflection\Types\Collection;
 use YubarajShrestha\NCHL\Services\NchlService;
 
 class NchlServiceProvider extends ServiceProvider

@@ -8,5 +8,7 @@
             "email": "companion.krish@outlook.com"
         }
     ],
-    "require": {}
+    "require": {
+        "guzzlehttp/guzzle": "^6.5"
+    }
 }
