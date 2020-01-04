@@ -16,6 +16,9 @@ class Nchl {
     protected $app_name;
 
     /** @var string */
+    protected $password;
+
+    /** @var string */
     protected $txn_id;
 
     /** @var string */
@@ -39,6 +42,10 @@ class Nchl {
     protected $certificate;
 
     public function __construct(array $data = []) {
+        $this->update($data);
+    }
+
+    protected function update(array $data = []) {
         $config = config('nchl');
         foreach($config as $key => $conf) {
             $this->$key = $conf;
@@ -47,8 +54,6 @@ class Nchl {
             $this->$key = $value;
         }
         $this->certificate = Storage::get('/public/certs/nchl.pfx');
-
-        $nchlData = [];
     }
 
     /**
@@ -98,6 +103,22 @@ class Nchl {
     public function setAppName(string $app_name): void
     {
         $this->app_name = $app_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param string $password
+     */
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
     }
 
     /**
@@ -229,12 +250,13 @@ class Nchl {
     }
 
     /**
+     * @param string $string
      * @return string
      * @throws NchlException
      */
-    public function token(): string {
+    public function token(string $string = null): string {
         $this->validate();
-        $string = "MERCHANTID={$this->merchant_id},APPID={$this->app_id},APPNAME={$this->app_name},TXNID={$this->txn_id},TXNAMT={$this->txn_amount}";
+        if(!$string) $string = "MERCHANTID={$this->merchant_id},APPID={$this->app_id},APPNAME={$this->app_name},TXNID={$this->txn_id},TXNAMT={$this->txn_amount}";
 //        $string = "MERCHANTID={$this->merchant_id},APPID={$this->app_id},APPNAME={$this->app_name},TXNID=8024,TXNDATE=08-10-
 //        2017,TXNCRNCY={$this->txn_currency},TXNAMT=1000,REFERENCEID=1.2.4,REMARKS=123455,PARTICULARS=12
 //        345,TOKEN=TOKEN";
@@ -263,7 +285,7 @@ class Nchl {
      * @throws NchlException
      */
     public function validate() {
-        $requiredFields = ['merchant_id', 'app_id', 'app_name', 'txn_currency', 'txn_id', 'txn_date', 'txn_amount', 'reference_id', 'remarks', 'particulars'];
+        $requiredFields = ['merchant_id', 'app_id', 'app_name', 'password', 'txn_currency', 'txn_id', 'txn_date', 'txn_amount', 'reference_id', 'remarks', 'particulars'];
         foreach ($requiredFields as $requiredField) {
             if (empty($this->$requiredField)) {
                 throw NchlException::missingField($this, $requiredField);
