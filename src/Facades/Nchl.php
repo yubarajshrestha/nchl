@@ -5,8 +5,7 @@ namespace YubarajShrestha\NCHL\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * Class Nchl
- * @package YubarajShrestha\NCHL
+ * Class Nchl.
  */
 class Nchl extends Facade
 {

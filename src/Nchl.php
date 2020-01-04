@@ -4,8 +4,8 @@ namespace YubarajShrestha\NCHL;
 use Illuminate\Support\Facades\Storage;
 use YubarajShrestha\NCHL\Exceptions\NchlException;
 
-class Nchl {
-
+class Nchl
+{
     /** @var string */
     protected $merchant_id;
 
@@ -41,16 +41,20 @@ class Nchl {
 
     protected $certificate;
 
-    public function __construct(array $data = []) {
+    public function __construct(array $data = [])
+    {
         $this->update($data);
     }
 
-    protected function update(array $data = []) {
+    protected function update(array $data = [])
+    {
         $config = config('nchl');
-        foreach($config as $key => $conf) {
+        foreach($config as $key => $conf)
+        {
             $this->$key = $conf;
         }
-        foreach ($data as $key => $value) {
+        foreach ($data as $key => $value)
+        {
             $this->$key = $value;
         }
         $this->certificate = Storage::get('/public/certs/nchl.pfx');
@@ -249,7 +253,8 @@ class Nchl {
         $this->certificate = $certificate;
     }
 
-    public function getValidationUrl(): string {
+    public function getValidationUrl(): string
+    {
         try {
             return config('nchl')['validation_url'];
         } catch(\Exception $e) {
@@ -257,7 +262,8 @@ class Nchl {
         }
     }
 
-    public function getTransactionDetailUrl(): string {
+    public function getTransactionDetailUrl(): string
+    {
         try {
             return config('nchl')['transaction_detail_url'];
         } catch(\Exception $e) {
@@ -268,9 +274,11 @@ class Nchl {
     /**
      * @param string $string
      * @return string
+     *
      * @throws NchlException
      */
-    public function token(string $string = null): string {
+    public function token(string $string = null): string
+    {
         $this->validate();
         if(!$string) $string = "MERCHANTID={$this->merchant_id},APPID={$this->app_id},APPNAME={$this->app_name},TXNID={$this->txn_id},TXNAMT={$this->txn_amount}";
 //        $string = "MERCHANTID={$this->merchant_id},APPID={$this->app_id},APPNAME={$this->app_name},TXNID=8024,TXNDATE=08-10-
@@ -279,19 +287,21 @@ class Nchl {
 
         $private_key = null;
 
-        if(openssl_pkcs12_read($this->certificate, $cert_info, "123")) {
+        if(openssl_pkcs12_read($this->certificate, $cert_info, "123"))
+        {
             $private_key = openssl_pkey_get_private($cert_info['pkey']);
             //$array = openssl_pkey_get_details($private_key);
             // print_r($array);
         } else {
-            throw NchlException::certificateError($this,"Unable to read certificate.");
+            throw NchlException::certificateError($this, 'Unable to read certificate.');
         }
 
-        if(openssl_sign($string, $signature , $private_key, "sha256WithRSAEncryption")){
+        if(openssl_sign($string, $signature , $private_key, "sha256WithRSAEncryption"))
+        {
             $hash = base64_encode($signature);
             openssl_free_key($private_key);
         } else {
-            throw NchlException::certificateError($this,"Unable to sign certificate.");
+            throw NchlException::certificateError($this, 'Unable to sign certificate.');
         }
 
         return $hash;
@@ -300,9 +310,11 @@ class Nchl {
     /**
      * @throws NchlException
      */
-    public function validate() {
+    public function validate()
+    {
         $requiredFields = ['merchant_id', 'app_id', 'app_name', 'password', 'txn_currency', 'txn_id', 'txn_date', 'txn_amount', 'reference_id', 'remarks', 'particulars'];
-        foreach ($requiredFields as $requiredField) {
+        foreach ($requiredFields as $requiredField)
+        {
             if (empty($this->$requiredField)) {
                 throw NchlException::missingField($this, $requiredField);
             }
@@ -322,7 +334,8 @@ class Nchl {
      * @param $key
      * @throws NchlException
      */
-    public function __get($key) {
+    public function __get($key)
+    {
         throw NchlException::propertyMissing($this, "Unable to access property: `{$key}`");
     }
 }
