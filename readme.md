@@ -12,10 +12,6 @@ Require this package with composer.
 ```shell
 composer install yubarajshrestha/nchl
 ```
-Publish configurations and other required helpers.
-```shell 
-php artisan vendor publish --tag=nchl
-```
 Laravel 5.5 uses Package Auto-Discovery, so doesn't require you to manually add the ServiceProvider.
 
 ### Laravel 5.5+:
