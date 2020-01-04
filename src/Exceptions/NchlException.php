@@ -53,9 +53,10 @@ class NchlException extends Exception
     /**
      * @return NchlException
      */
-    protected function withSubject() : NchlException
+    protected function withSubject(): self
     {
         $this->subject;
+
         return $this;
     }
 }
