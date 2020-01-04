@@ -1,5 +1,10 @@
 language: php
 php:
   - '7.3'
+  - '7.4'
 env:
   - APP_ENV=testing
+
+before_script:
+  - composer self-update
+  - composer install --no-interaction=
