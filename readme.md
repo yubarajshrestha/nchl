@@ -1,5 +1,9 @@
 ## NCHL
 Connect IPS payment gateway package.
+[![Latest Stable Version](https://poser.pugx.org/yubarajshrestha/nchl/v/stable)](https://packagist.org/packages/yubarajshrestha/nchl)
+[![Total Downloads](https://poser.pugx.org/yubarajshrestha/nchl/downloads)](https://packagist.org/packages/yubarajshrestha/nchl)
+[![Latest Unstable Version](https://poser.pugx.org/yubarajshrestha/nchl/v/unstable)](https://packagist.org/packages/yubarajshrestha/nchl)
+[![License](https://poser.pugx.org/yubarajshrestha/nchl/license)](https://packagist.org/packages/yubarajshrestha/nchl)
 
 ### Installation
 Require this package with composer.
