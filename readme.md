@@ -11,7 +11,7 @@ Connect IPS payment gateway package.
 ### Installation
 Require this package with composer.
 ```shell
-composer install yubarajshrestha/nchl
+composer require yubarajshrestha/nchl
 ```
 Laravel 5.5 uses Package Auto-Discovery, so doesn't require you to manually add the ServiceProvider.
 
