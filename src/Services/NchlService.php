@@ -12,14 +12,14 @@ class NchlService
     /**
      * @var Nchl
      */
-    public $nchl;
+    public $core;
 
     /**
      * NchlService constructor.
      */
     public function __construct()
     {
-        $this->nchl = new Nchl();
+        $this->core = new Nchl();
     }
 
     /**
@@ -29,8 +29,7 @@ class NchlService
      */
     public function __init(array $config)
     {
-        $this->nchl = new Nchl($config);
-//        session()->flash('nchl', $this->nchl->__serialize());
+        $this->core = new Nchl($config);
         return $this;
     }
 
@@ -41,7 +40,7 @@ class NchlService
      */
     public function token()
     {
-        return $this->nchl->token();
+        return $this->core->token();
         /*$client = new Client();
         $res = $client->request('GET', 'https://api.github.com/user', [
             'auth' => ['companion.krish@outlook.com', 'Axelingit9@4!']
@@ -56,18 +55,18 @@ class NchlService
      */
     public function paymentValidate()
     {
-        $string = "MERCHANTID={$this->nchl->getMerchantId()},APPID={$this->nchl->getAppId()},APPNAME={$this->nchl->getAppName()},TXNID={$this->nchl->getTxnId()},TXNAMT={$this->nchl->getTxnAmount()}";
-        $token = $this->nchl->token($string);
+        $string = "MERCHANTID={$this->core->getMerchantId()},APPID={$this->core->getAppId()},APPNAME={$this->core->getAppName()},TXNID={$this->core->getTxnId()},TXNAMT={$this->core->getTxnAmount()}";
+        $token = $this->core->token($string);
         $client = new Client();
 
         try {
-            $response = $client->request('POST', $this->nchl->getValidationUrl(), [
-                'auth' => [$this->nchl->getAppId(), $this->nchl->getPassword()],
+            $response = $client->request('POST', $this->core->getValidationUrl(), [
+                'auth' => [$this->core->getAppId(), $this->core->getPassword()],
                 'json' => [
-                    'merchantId'    => $this->nchl->getMerchantId(),
-                    'appId'         => $this->nchl->getAppId(),
-                    'referenceId'   => $this->nchl->getTxnId(),
-                    'txnAmt'        => $this->nchl->getTxnAmount(),
+                    'merchantId'    => $this->core->getMerchantId(),
+                    'appId'         => $this->core->getAppId(),
+                    'referenceId'   => $this->core->getTxnId(),
+                    'txnAmt'        => $this->core->getTxnAmount(),
                     'token'         => $token,
                 ],
             ]);
@@ -88,18 +87,18 @@ class NchlService
      */
     public function paymentDetails()
     {
-        $string = "MERCHANTID={$this->nchl->getMerchantId()},APPID={$this->nchl->getAppId()},APPNAME={$this->nchl->getAppName()},TXNID={$this->nchl->getTxnId()},TXNAMT={$this->nchl->getTxnAmount()}";
-        $token = $this->nchl->token($string);
+        $string = "MERCHANTID={$this->core->getMerchantId()},APPID={$this->core->getAppId()},APPNAME={$this->core->getAppName()},TXNID={$this->core->getTxnId()},TXNAMT={$this->core->getTxnAmount()}";
+        $token = $this->core->token($string);
         $client = new Client();
 
         try {
-            $response = $client->request('POST', $this->nchl->getTransactionDetailUrl(), [
-                'auth' => [$this->nchl->getAppId(), $this->nchl->getPassword()],
+            $response = $client->request('POST', $this->core->getTransactionDetailUrl(), [
+                'auth' => [$this->core->getAppId(), $this->core->getPassword()],
                 'json' => [
-                    'merchantId'    => $this->nchl->getMerchantId(),
-                    'appId'         => $this->nchl->getAppId(),
-                    'referenceId'   => $this->nchl->getTxnId(),
-                    'txnAmt'        => $this->nchl->getTxnAmount(),
+                    'merchantId'    => $this->core->getMerchantId(),
+                    'appId'         => $this->core->getAppId(),
+                    'referenceId'   => $this->core->getTxnId(),
+                    'txnAmt'        => $this->core->getTxnAmount(),
                     'token'         => $token,
                 ],
             ]);
