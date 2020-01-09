@@ -53,3 +53,5 @@ NCHL_TRANSACTION_DETAIL_URL=
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
 <!-- ALL-CONTRIBUTORS-LIST:END -->
+
+### License
