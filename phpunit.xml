@@ -10,6 +10,7 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false">
+    <formatter type="clover" usefile="false"/>
     <testsuites>
         <testsuite name="NCHL Test Suit">
             <directory suffix="Test.php">./tests</directory>
