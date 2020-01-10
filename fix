@@ -1,0 +1,50 @@
+#!/bin/bash
+
+Red=$'\e[1;31m'
+Green=$'\e[1;32m'
+Blue=$'\e[1;34m'
+Yellow=$'\e[33m'
+Cyn=$'\e[1;36m'
+End=$'\e[0m'
+
+normal=$'\033[0m'
+blink=$'\e[5m'
+bold=$'\e[1m'
+underline=$'\e[4m'
+standout=$'\e[7m'
+
+echo
+echo $Green"**************************************************"
+echo "** Building Application"
+echo "**************************************************"$End
+echo 
+echo -e $Blue"Please select option: \n   1) Scan Only \n   2) Fix Only \n   3) Intelligent $End"
+read -p $Blue$blink"Choice: $normal $END" choice
+echo
+if [ "$choice" == 1 ]
+then
+    echo
+    echo $Green"Scanning src..."$End
+    # php-cs-fixer fix app --rules=@PSR2
+    php-cs-fixer fix src --rules=@PSR2 --dry-run
+elif [ "$choice" == 2 ]
+then
+    read -p $Blue"Please input file/directory path: $End" fp
+    echo
+    echo $Blue"Fixing files... $END"
+    php-cs-fixer fix "$fp" --rules=@PSR2
+elif [ "$choice" == 3 ]
+then
+    echo
+    echo $Green"Scanning /src..."$End
+    php-cs-fixer fix src --rules=@PSR2
+else
+    echo $Green"**************************************************"
+    echo "** Closing session."
+    echo "**************************************************"$End
+    exit 1
+fi
+echo 
+echo $Green"**************************************************"
+echo "** Building complete."
+echo "**************************************************"$End
