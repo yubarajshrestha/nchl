@@ -9,7 +9,8 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
-         stopOnFailure="false">
+         stopOnFailure="false"
+         codecoverage="true" haltonfailure="true" haltonerror="true">
     <formatter type="clover" usefile="false"/>
     <testsuites>
         <testsuite name="NCHL Test Suit">

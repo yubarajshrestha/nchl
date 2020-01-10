@@ -1,0 +1,6 @@
+<project name="NCHL" default="nchl">
+    <property file="build.properties">
+    <target name="default">
+        <echo>${version}</echo>
+    </target>
+</project>
