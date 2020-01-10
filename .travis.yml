@@ -1,8 +1,8 @@
 language: php
 
 env:
-  - APP_ENV=testing
   global:
+    - APP_ENV=testing
     - SETUP=stable
 
 matrix:
