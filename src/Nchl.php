@@ -160,7 +160,7 @@ class Nchl
     /**
      * @return string
      */
-    public function getTxnCurrency(): string
+    public function getCurrency(): string
     {
         return $this->txn_currency;
     }
@@ -168,7 +168,7 @@ class Nchl
     /**
      * @param string $txn_currency
      */
-    public function setTxnCurrency(string $txn_currency): void
+    public function setCurrency(string $txn_currency): void
     {
         $this->txn_currency = $txn_currency;
     }
