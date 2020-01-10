@@ -1,6 +1,7 @@
 language: php
 
 env:
+  - APP_ENV=testing
   global:
     - SETUP=stable
 
