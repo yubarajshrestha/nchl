@@ -30,6 +30,7 @@ class NchlService
     public function __init(array $config)
     {
         $this->core = new Nchl($config);
+
         return $this;
     }
 
