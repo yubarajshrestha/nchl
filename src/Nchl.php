@@ -293,13 +293,16 @@ class Nchl
         // if (!$string) {
         //     $string = "MERCHANTID={$this->merchant_id},APPID={$this->app_id},APPNAME={$this->app_name},TXNID={$this->txn_id},TXNAMT={$this->txn_amount}";
         // }
-        $string = "MERCHANTID={$this->merchant_id},APPID={$this->app_id},APPNAME={$this->app_name},TXNID={$this->txn_id},TXNDATE={$this->txn_date},TXNCRNCY={$this->txn_currency},TXNAMT={$this->txn_amount},REFERENCEID={$this->reference_id},REMARKS={$this->remarks},PARTICULARS={$this->particulars},TOKEN=TOKEN";
-
+        // if(!$string) $string = "MERCHANTID={$this->merchant_id},APPID={$this->app_id},APPNAME={$this->app_name},TXNID={$this->txn_id},TXNDATE={$this->txn_date},TXNCRNCY={$this->txn_currency},TXNAMT={$this->txn_amount},REFERENCEID={$this->reference_id},REMARKS={$this->remarks},PARTICULARS={$this->particulars},TOKEN=TOKEN";
+        if (!$string) {
+            $string = "MERCHANTID={$this->merchant_id},APPID={$this->app_id},APPNAME={$this->app_name},TXNID={$this->txn_id},TXNDATE={$this->txn_date},TXNCRNCY={$this->txn_currency},TXNAMT={$this->txn_amount},REFERENCEID={$this->reference_id},REMARKS={$this->remarks},PARTICULARS={$this->particulars},TOKEN=TOKEN";
+        }
+        // dd($string);
         $private_key = null;
 
         if (openssl_pkcs12_read($this->certificate, $cert_info, '123')) {
             $private_key = openssl_pkey_get_private($cert_info['pkey']);
-        //$array = openssl_pkey_get_details($private_key);
+        // $array = openssl_pkey_get_details($private_key);
             // print_r($array);
         } else {
             throw NchlException::certificateError($this, 'Unable to read certificate.');
