@@ -57,6 +57,9 @@ class NchlService
     public function paymentValidate()
     {
         $string = "MERCHANTID={$this->core->getMerchantId()},APPID={$this->core->getAppId()},APPNAME={$this->core->getAppName()},TXNID={$this->core->getTxnId()},TXNAMT={$this->core->getTxnAmount()}";
+
+        // $string = "MERCHANTID={$this->core->getMerchantId()},APPID={$this->core->getAppId()},APPNAME={$this->core->getAppName()},TXNID={$this->core->getTxnId()},TXNCRNCY={$this->getCurrency()},TXNAMT={$this->core->getTxnAmount()},REFERENCEID={$this->core->getReferenceId()},REMARKS={$this->getRemarks()},PARTICULARS={$this->getParticulars()},TOKEN=TOKEN";
+        
         $token = $this->core->token($string);
         $client = new Client();
 

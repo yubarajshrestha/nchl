@@ -45,7 +45,7 @@ NCHL_TRANSACTION_DETAIL_URL=
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://yubarajshrestha.com.np"><img src="https://avatars0.githubusercontent.com/u/7955362?s=460&v=4" width="100px;" alt=""/><br /><sub><b>Yubaraj Shrestha</b></sub></a></td>
+    <td align="center"><a href="https://bindukarki.com.np"><img src="https://avatars3.githubusercontent.com/u/20794268?s=460&v=4" width="100px;" alt=""/><br /><sub><b>Bindu Karki</b></sub></a></td>
     <td align="center"><a href="https://yubarajshrestha.com.np"><img src="https://avatars0.githubusercontent.com/u/7955362?s=460&v=4" width="100px;" alt=""/><br /><sub><b>Yubaraj Shrestha</b></sub></a></td>
   </tr>
 </table>
