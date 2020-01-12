@@ -3,7 +3,7 @@ preset: recommended
 risky: true
 
 enabled:
-  - long_array_syntax
+  - short_array_syntax
   - strict
   - unalign_double_arrow
 
