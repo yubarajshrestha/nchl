@@ -1,6 +1,6 @@
 preset: recommended
 
-risky: false
+risky: true
 
 enabled:
   - long_array_syntax
