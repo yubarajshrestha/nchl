@@ -3,7 +3,7 @@ Connect IPS payment gateway package.
 
 [![Latest Stable Version](https://poser.pugx.org/yubarajshrestha/nchl/v/stable)](https://packagist.org/packages/yubarajshrestha/nchl)
 [![Total Downloads](https://poser.pugx.org/yubarajshrestha/nchl/downloads)](https://packagist.org/packages/yubarajshrestha/nchl)
-[![Latest Unstable Version](https://poser.pugx.org/yubarajshrestha/nchl/v/unstable)](https://packagist.org/packages/yubarajshrestha/nchl)
+
 [![License](https://poser.pugx.org/yubarajshrestha/nchl/license)](https://packagist.org/packages/yubarajshrestha/nchl)
 ![Build](https://travis-ci.com/yubarajshrestha/nchl.svg?branch=master)
 [![StyleCI](https://github.styleci.io/repos/230768636/shield?branch=master)](https://github.styleci.io/repos/230768636)
