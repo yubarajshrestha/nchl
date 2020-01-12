@@ -10,8 +10,6 @@ class NchlServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
-     *
-     * @return void
      */
     public function register()
     {
@@ -22,8 +20,6 @@ class NchlServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap services.
-     *
-     * @return void
      */
     public function boot()
     {

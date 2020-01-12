@@ -13,7 +13,6 @@ class NchlException extends Exception
     public $subject;
 
     /**
-     * @param Nchl $subject
      * @param $field
      *
      * @return NchlException
@@ -24,7 +23,6 @@ class NchlException extends Exception
     }
 
     /**
-     * @param Nchl $subject
      * @param $field
      *
      * @return NchlException
@@ -35,7 +33,6 @@ class NchlException extends Exception
     }
 
     /**
-     * @param Nchl $subject
      * @param $field
      *
      * @return NchlException

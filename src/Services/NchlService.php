@@ -23,8 +23,6 @@ class NchlService
     }
 
     /**
-     * @param array $config
-     *
      * @return $this
      */
     public function __init(array $config)
@@ -53,25 +51,27 @@ class NchlService
         // $string = "MERCHANTID={$this->core->getMerchantId()},APPID={$this->core->getAppId()},REFERENCEID={$this->core->getTxnId()},TXNAMT={$this->core->getTxnAmount()},TOKEN=TOKEN";
         $token = $this->core->token($string);
         $client = new Client();
+
         try {
             $response = $client->request('POST', $this->core->validationUrl(), [
                 'auth' => [$this->core->getAppId(), $this->core->getPassword()],
                 'form_params' => [
-                    'merchantId'    => $this->core->getMerchantId(),
-                    'appId'         => $this->core->getAppId(),
-                    'referenceId'   => $this->core->getTxnId(),
-                    'txnAmt'        => $this->core->getTxnAmount(),
-                    'token'         => $token,
+                    'merchantId' => $this->core->getMerchantId(),
+                    'appId' => $this->core->getAppId(),
+                    'referenceId' => $this->core->getTxnId(),
+                    'txnAmt' => $this->core->getTxnAmount(),
+                    'token' => $token,
                 ],
             ]);
+
             return $response->getBody();
             // TODO: Handle Payment Validation Response
         } catch (ClientException $e) {
             $message = $e->getResponse()->getReasonPhrase();
             $code = $e->getResponse()->getStatusCode();
-            if ($code == 404) {
+            if (404 === $code) {
                 $message = 'The requested url not found!';
-            } elseif ($code == 401) {
+            } elseif (401 === $code) {
                 $message = 'Session expired!';
             }
 
@@ -87,25 +87,27 @@ class NchlService
         $string = "MERCHANTID={$this->core->getMerchantId()},APPID={$this->core->getAppId()},REFERENCEID={$this->core->getTxnId()},TXNAMT={$this->core->getTxnAmount()}";
         $token = $this->core->token($string);
         $client = new Client();
+
         try {
             $response = $client->request('POST', $this->core->getTransactionDetailUrl(), [
                 'auth' => [$this->core->getAppId(), $this->core->getPassword()],
                 'form_params' => [
-                    'merchantId'    => $this->core->getMerchantId(),
-                    'appId'         => $this->core->getAppId(),
-                    'referenceId'   => $this->core->getTxnId(),
-                    'txnAmt'        => $this->core->getTxnAmount(),
-                    'token'         => $token,
+                    'merchantId' => $this->core->getMerchantId(),
+                    'appId' => $this->core->getAppId(),
+                    'referenceId' => $this->core->getTxnId(),
+                    'txnAmt' => $this->core->getTxnAmount(),
+                    'token' => $token,
                 ],
             ]);
+
             return $response->getBody();
             // TODO: Handle Transaction Detail Response
         } catch (ClientException $e) {
             $message = $e->getResponse()->getReasonPhrase();
             $code = $e->getResponse()->getStatusCode();
-            if ($code == 404) {
+            if (404 === $code) {
                 $message = 'The requested url not found!';
-            } elseif ($code == 401) {
+            } elseif (401 === $code) {
                 $message = 'Session expired!';
             }
 

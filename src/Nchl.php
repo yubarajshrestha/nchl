@@ -47,207 +47,144 @@ class Nchl
         $this->update($data);
     }
 
-    protected function update(array $data = [])
+    public function __serialize(): array
     {
-        $config = config('nchl');
-        foreach ($config as $key => $conf) {
-            $this->$key = $conf;
-        }
-        foreach ($data as $key => $value) {
-            $this->$key = $value;
-        }
-        $this->certificate = Storage::get('/public/certs/nchl.pfx');
+        $array = get_object_vars($this);
+        $array['token'] = $this->token();
+        session(['nchl' => $array]);
+        unset($array['certificate']);
+
+        return $array;
+    }
+
+    /**
+     * @param $key
+     *
+     * @throws NchlException
+     */
+    public function __get($key)
+    {
+        throw NchlException::propertyMissing($this, "Unable to access property: `{$key}`");
     }
 
     /**
      * Get NCHL merchant id.
-     *
-     * @return string
      */
     public function getMerchantId(): string
     {
         return $this->merchant_id;
     }
 
-    /**
-     * @param string $merchant_id
-     */
     public function setMerchantId(string $merchant_id): void
     {
         $this->merchant_id = $merchant_id;
     }
 
-    /**
-     * @return string
-     */
     public function getAppId(): string
     {
         return $this->app_id;
     }
 
-    /**
-     * @param string $app_id
-     */
     public function setAppId(string $app_id): void
     {
         $this->app_id = $app_id;
     }
 
-    /**
-     * @return string
-     */
     public function getAppName(): string
     {
         return $this->app_name;
     }
 
-    /**
-     * @param string $app_name
-     */
     public function setAppName(string $app_name): void
     {
         $this->app_name = $app_name;
     }
 
-    /**
-     * @return string
-     */
     public function getPassword(): string
     {
         return $this->password;
     }
 
-    /**
-     * @param string $password
-     */
     public function setPassword(string $password): void
     {
         $this->password = $password;
     }
 
-    /**
-     * @return string
-     */
     public function getTxnId(): string
     {
         return $this->txn_id;
     }
 
-    /**
-     * @param string $txn_id
-     */
     public function setTxnId(string $txn_id): void
     {
         $this->txn_id = $txn_id;
     }
 
-    /**
-     * @return string
-     */
     public function getTxnDate(): string
     {
         return $this->txn_date;
     }
 
-    /**
-     * @param string $txn_date
-     */
     public function setTxnDate(string $txn_date): void
     {
         $this->txn_date = $txn_date;
     }
 
-    /**
-     * @return string
-     */
     public function getCurrency(): string
     {
         return $this->txn_currency;
     }
 
-    /**
-     * @param string $txn_currency
-     */
     public function setCurrency(string $txn_currency): void
     {
         $this->txn_currency = $txn_currency;
     }
 
-    /**
-     * @return string
-     */
     public function getTxnAmount(): string
     {
         return $this->txn_amount;
     }
 
-    /**
-     * @param string $txn_amount
-     */
     public function setTxnAmount(string $txn_amount): void
     {
         $this->txn_amount = $txn_amount;
     }
 
-    /**
-     * @return string
-     */
     public function getReferenceId(): string
     {
         return $this->reference_id;
     }
 
-    /**
-     * @param string $reference_id
-     */
     public function setReferenceId(string $reference_id): void
     {
         $this->reference_id = $reference_id;
     }
 
-    /**
-     * @return string
-     */
     public function getRemarks(): string
     {
         return $this->remarks;
     }
 
-    /**
-     * @param string $remarks
-     */
     public function setRemarks(string $remarks): void
     {
         $this->remarks = $remarks;
     }
 
-    /**
-     * @return string
-     */
     public function getParticulars(): string
     {
         return $this->particulars;
     }
 
-    /**
-     * @param string $particulars
-     */
     public function setParticulars(string $particulars): void
     {
         $this->particulars = $particulars;
     }
 
-    /**
-     * @return string
-     */
     public function getCertificate(): string
     {
         return $this->certificate;
     }
 
-    /**
-     * @param string $certificate
-     */
     public function setCertificate(string $certificate): void
     {
         $this->certificate = $certificate;
@@ -284,8 +221,6 @@ class Nchl
      * @param string $string
      *
      * @throws NchlException
-     *
-     * @return string
      */
     public function token(string $string = null): string
     {
@@ -297,7 +232,7 @@ class Nchl
         if (!$string) {
             $string = "MERCHANTID={$this->merchant_id},APPID={$this->app_id},APPNAME={$this->app_name},TXNID={$this->txn_id},TXNDATE={$this->txn_date},TXNCRNCY={$this->txn_currency},TXNAMT={$this->txn_amount},REFERENCEID={$this->reference_id},REMARKS={$this->remarks},PARTICULARS={$this->particulars},TOKEN=TOKEN";
         }
-        
+
         $private_key = null;
 
         if (openssl_pkcs12_read($this->certificate, $cert_info, '123')) {
@@ -325,29 +260,21 @@ class Nchl
     {
         $requiredFields = ['merchant_id', 'app_id', 'app_name', 'password', 'txn_currency', 'txn_id', 'txn_date', 'txn_amount', 'reference_id', 'remarks', 'particulars'];
         foreach ($requiredFields as $requiredField) {
-            if (empty($this->$requiredField)) {
+            if (empty($this->{$requiredField})) {
                 throw NchlException::missingField($this, $requiredField);
             }
         }
     }
 
-    public function __serialize(): array
+    protected function update(array $data = [])
     {
-        $array = get_object_vars($this);
-        $array['token'] = $this->token();
-        session(['nchl' => $array]);
-        unset($array['certificate']);
-
-        return $array;
-    }
-
-    /**
-     * @param $key
-     *
-     * @throws NchlException
-     */
-    public function __get($key)
-    {
-        throw NchlException::propertyMissing($this, "Unable to access property: `{$key}`");
+        $config = config('nchl');
+        foreach ($config as $key => $conf) {
+            $this->{$key} = $conf;
+        }
+        foreach ($data as $key => $value) {
+            $this->{$key} = $value;
+        }
+        $this->certificate = Storage::get('/public/certs/nchl.pfx');
     }
 }
