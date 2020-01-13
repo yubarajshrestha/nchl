@@ -48,6 +48,7 @@
         <delete dir="${build-dir}/coverage" />
         <delete dir="${build-dir}/logs" />
         <delete dir="${build-dir}/pdepend" />
+        <delete dir="${basedir}/vendor" />
     </target>
 
     <target name="composer" depends="clean-composer,composer-install,composer-update" description="Install or update dependencies" />
