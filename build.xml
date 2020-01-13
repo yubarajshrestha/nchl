@@ -253,8 +253,7 @@
 		description="Run unit tests with PHPUnit">
 		<exec executable="${phpunit}">
 			<arg line="--coverage-clover ${basedir}/build/logs/clover.xml
-				--coverage-html ${basedir}/build/coverage
-				."/>
+				--coverage-html ${basedir}/build/coverage ."/>
 		</exec>
 	<property name="phpunit.done" value="true"/>
 	</target>
