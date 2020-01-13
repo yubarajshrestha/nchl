@@ -4,7 +4,7 @@
  <property name="pdepend" value="pdepend"/>
  <property name="phpcpd"  value="phpcpd"/>
  <property name="phpcs"   value="phpcs"/>
- <property name="phpdox"  value="phpdox"/>
+ <property name="phpdox"  value="/usr/local/bin/phpdox"/>
  <property name="phploc"  value="phploc"/>
  <property name="phpmd"   value="phpmd"/>
  <property name="phpunit" value="phpunit"/>
