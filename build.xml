@@ -66,7 +66,6 @@
 			<delete dir="${basedir}/build/logs"/>
 			<delete dir="${basedir}/build/pdepend"/>
 			<delete dir="${basedir}/build/phpdox"/>
-			<delete dir="${basedir}/build/reports"/>
 			<delete dir="${basedir}/vendor"/>
 			<property name="clean.done" value="true"/>
 	</target>
@@ -121,9 +120,9 @@
 		<exec executable="${phploc}" taskname="phploc">
 			<arg value="--count-tests" />
 			<arg value="--log-csv" />
-			<arg path="${basedir}/build/reports/phploc.csv" />
+			<arg path="${basedir}/build/logs/phploc.csv" />
 			<arg value="--log-xml" />
-			<arg path="${basedir}/build/reports/phploc.xml" />
+			<arg path="${basedir}/build/logs/phploc.xml" />
 			<arg path="${basedir}/src" />
 			<arg path="${basedir}/tests" />
 		</exec>
@@ -216,7 +215,7 @@
 		description="Find duplicate code using PHPCPD and log result in XML format. Intended for usage within a continuous integration environment.">
 		<exec executable="${phpcpd}" taskname="phpcpd">
 			<arg value="--log-pmd" />
-			<arg path="${basedir}/build/reports/pmd-cpd.xml" />
+			<arg path="${basedir}/build/logs/pmd-cpd.xml" />
 			<arg path="${basedir}/src" />
 		</exec>
 		<property name="phpcpd.done" value="true"/>
