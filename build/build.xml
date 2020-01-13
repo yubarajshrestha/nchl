@@ -61,11 +61,11 @@
  <target name="clean"
 	 unless="clean.done"
 	 description="Cleanup build artifacts">
-  <delete dir="${basedir}/build/api"/>
-  <delete dir="${basedir}/build/coverage"/>
-  <delete dir="${basedir}/build/logs"/>
-  <delete dir="${basedir}/build/pdepend"/>
-  <delete dir="${basedir}/build/phpdox"/>
+  <delete dir="${basedir}/api"/>
+  <delete dir="${basedir}/coverage"/>
+  <delete dir="${basedir}/logs"/>
+  <delete dir="${basedir}/pdepend"/>
+  <delete dir="${basedir}/phpdox"/>
   <property name="clean.done" value="true"/>
  </target>
 
@@ -73,11 +73,11 @@
 	 unless="prepare.done"
 	 depends="clean"
 	 description="Prepare for build">
-  <mkdir dir="${basedir}/build/api"/>
-  <mkdir dir="${basedir}/build/coverage"/>
-  <mkdir dir="${basedir}/build/logs"/>
-  <mkdir dir="${basedir}/build/pdepend"/>
-  <mkdir dir="${basedir}/build/phpdox"/>
+  <mkdir dir="${basedir}/api"/>
+  <mkdir dir="${basedir}/coverage"/>
+  <mkdir dir="${basedir}/logs"/>
+  <mkdir dir="${basedir}/pdepend"/>
+  <mkdir dir="${basedir}/phpdox"/>
   <property name="prepare.done" value="true"/>
  </target>
 
@@ -87,12 +87,12 @@
   <apply executable="php" taskname="lint">
    <arg value="-l" />
 
-   <fileset dir="${basedir}/src">
+   <fileset dir="../src">
 	<include name="**/*.php" />
 	<modified />
    </fileset>
 
-   <fileset dir="${basedir}/tests">
+   <fileset dir="../tests">
 	<include name="**/*.php" />
 	<modified />
    </fileset>
