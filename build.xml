@@ -22,7 +22,7 @@
         depends="clean,build-common,tools-parallel" />
 
 	<target name="full-build"
-		depends="prepare,phpunit,phpdox,-check-failure"
+		depends="prepare,phpunit,phpdox"
 		description="Performs static analysis, runs the tests, and generates project documentation"/>
 
     <target name="build-common" depends="lint,prepare,composer,phpunit" />
