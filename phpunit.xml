@@ -27,6 +27,6 @@
         <log type="coverage-html" target="coverage"/>
         <log type="coverage-clover" target="build/reports/clover.xml"/>
         <log type="coverage-crap4j" target="build/reports/crap4j.xml"/>
-        <log type="junit" target="build/reports/junit.xml" logIncompleteSkipped="false"/>
+        <log type="junit" target="build/reports/junit.xml"/>
     </logging>
 </phpunit>
