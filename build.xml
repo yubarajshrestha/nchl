@@ -21,6 +21,10 @@
     <target name="build-parallel-clean"
         depends="clean,build-common,tools-parallel" />
 
+	<target name="full-build"
+		depends="prepare,static-analysis,phpunit,phpdox,-check-failure"
+		description="Performs static analysis, runs the tests, and generates project documentation"/>
+
     <target name="build-common" depends="lint,prepare,composer,phpunit" />
 
     <target name="tools-parallel" description="Run tools in parallel">
