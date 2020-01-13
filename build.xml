@@ -194,6 +194,7 @@
         <mkdir dir="${build-dir}/coverage" />
         <mkdir dir="${build-dir}/logs" />
         <mkdir dir="${build-dir}/pdepend" />
+        <mkdir dir="${basedir}/vendor" />
     </target>
 </project>
 
