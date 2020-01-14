@@ -61,6 +61,7 @@
 	<target name="clean"
 		unless="clean.done"
 		description="Cleanup build artifacts">
+			<delete dir="${basedir}/logs"/>
 			<delete dir="${basedir}/build/api"/>
 			<delete dir="${basedir}/build/coverage"/>
 			<delete dir="${basedir}/build/logs"/>
@@ -267,9 +268,9 @@
             <arg value="--coverage-clover" />
             <arg value="${basedir}/build/logs/clover.xml" />
             <arg value="--coverage-crap4j" />
-            <arg value="${basedir}/logs/crap4j.xml" />
+            <arg value="${basedir}/build/logs/crap4j.xml" />
             <arg value="--log-junit" />
-            <arg value="${basedir}/logs/junit.xml" />
+            <arg value="${basedir}/build/logs/junit.xml" />
 		</exec>
 	<property name="phpunit.done" value="true"/>
 	</target>
