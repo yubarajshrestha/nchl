@@ -28,11 +28,11 @@
 	<property name="phpunit" value="${basedir}/vendor/bin/phpunit"/> -->
 
 	<target name="full-build"
-		depends="prepare,composer,static-analysis,phpdox,phpunit,-check-failure"
+		depends="prepare,composer,static-analysis,phpdox,phpunit"
 		description="Performs static analysis, runs the tests, and generates project documentation"/>
 
 	<target name="full-build-parallel"
-		depends="prepare,static-analysis-parallel,phpunit,phpdox,-check-failure"
+		depends="prepare,static-analysis-parallel,phpunit,phpdox"
 		description="Performs static analysis (executing the tools in parallel), runs the tests, and generates project documentation"/>
 
 	<target name="quick-build"
@@ -286,7 +286,7 @@
 		<property name="phpunit.done" value="true"/>
 	</target>
 
-	<target name="-check-failure">
+	<!-- <target name="-check-failure">
 		<fail message="PHPUnit did not finish successfully">
 			<condition>
 				<not>
@@ -294,6 +294,6 @@
 				</not>
 			</condition>
 		</fail>
-	</target>
+	</target> -->
 </project>
 
