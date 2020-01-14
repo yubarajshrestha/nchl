@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="name-of-project" default="full-build">
+<project name="name-of-project" default="full-build" basedir=".">
 	<!-- By default, we assume all tools to be on the $PATH -->
 	<property name="pdepend" value="pdepend"/>
 	<property name="phpcpd"  value="phpcpd"/>
@@ -28,7 +28,7 @@
 	<property name="phpunit" value="${basedir}/vendor/bin/phpunit"/> -->
 
 	<target name="full-build"
-		depends="prepare,composer,static-analysis,phpunit,phpdox,-check-failure"
+		depends="prepare,composer,static-analysis,phpdox,phpunit,-check-failure"
 		description="Performs static analysis, runs the tests, and generates project documentation"/>
 
 	<target name="full-build-parallel"
@@ -247,13 +247,29 @@
 		<property name="phpcpd.done" value="true"/>
 	</target>
 
+	<target name="phpdox"
+		unless="phpdox.done"
+		depends="phploc-ci,phpcs-ci,phpmd-ci"
+		description="Generate project documentation using phpDox">
+		<exec executable="${phpdox}" dir="${basedir}/build" taskname="phpdox"/>
+		<property name="phpdox.done" value="true"/>
+	</target>
+
 	<target name="phpunit"
 		unless="phpunit.done"
 		depends="prepare"
 		description="Run unit tests with PHPUnit">
-		<exec executable="${phpunit}">
-			<arg line="--coverage-clover ${basedir}/build/logs/clover.xml
-				--coverage-html ${basedir}/build/coverage ."/>
+		<exec executable="${phpunit}" failonerror="true">
+            <arg value="-c" />
+            <arg value="${basedir}/phpunit.xml" />
+            <arg value="--coverage-html" />
+            <arg value="${basedir}/build/coverage" />
+            <arg value="--coverage-clover" />
+            <arg value="${basedir}/build/logs/clover.xml" />
+            <arg value="--coverage-crap4j" />
+            <arg value="${basedir}/logs/crap4j.xml" />
+            <arg value="--log-junit" />
+            <arg value="${basedir}/logs/junit.xml" />
 		</exec>
 	<property name="phpunit.done" value="true"/>
 	</target>
@@ -268,14 +284,6 @@
 			<arg value="--no-coverage"/>
 		</exec>
 		<property name="phpunit.done" value="true"/>
-	</target>
-
-	<target name="phpdox"
-		unless="phpdox.done"
-		depends="phploc-ci,phpcs-ci,phpmd-ci"
-		description="Generate project documentation using phpDox">
-		<exec executable="${phpdox}" dir="${basedir}/build" taskname="phpdox"/>
-		<property name="phpdox.done" value="true"/>
 	</target>
 
 	<target name="-check-failure">
