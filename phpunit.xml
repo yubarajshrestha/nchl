@@ -13,8 +13,13 @@
             <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>
-    <filter>
+    <!-- <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+        </whitelist>
+    </filter> -->
+    <filter>
+        <whitelist>
             <directory suffix=".php">./src</directory>
         </whitelist>
     </filter>
