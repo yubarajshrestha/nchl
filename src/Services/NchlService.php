@@ -6,7 +6,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use YubarajShrestha\NCHL\Exceptions\NchlException;
 use YubarajShrestha\NCHL\Nchl;
-use GuzzleHttp\Psr7\Request;
 
 class NchlService
 {
@@ -51,6 +50,7 @@ class NchlService
         $string = "MERCHANTID={$this->core->getMerchantId()},APPID={$this->core->getAppId()},REFERENCEID={$this->core->getTxnId()},TXNAMT={$this->core->getTxnAmount()}";
         $token = $this->core->token($string);
         $client = new Client(['auth' => [$this->core->getAppId(), $this->core->getPassword()]]);
+
         try {
             $response = $client->post($this->core->validationUrl(), [
                 'json' => [
@@ -62,12 +62,13 @@ class NchlService
                 ],
             ]);
             $body = $response->getBody();
-            if($body) {
+            if ($body) {
                 $body = json_decode($body);
             }
+
             return (object) [
                 'message' => $body->statusDesc,
-                'status' => $body->status == 'SUCCESS',
+                'status' => $body->status === 'SUCCESS',
             ];
         } catch (ClientException $e) {
             $message = $e->getResponse()->getReasonPhrase();
@@ -77,6 +78,7 @@ class NchlService
             } elseif (401 === $code) {
                 $message = 'Session expired!';
             }
+
             throw NchlException::clientError($this, $message);
         }
     }
@@ -89,6 +91,7 @@ class NchlService
         $string = "MERCHANTID={$this->core->getMerchantId()},APPID={$this->core->getAppId()},REFERENCEID={$this->core->getTxnId()},TXNAMT={$this->core->getTxnAmount()}";
         $token = $this->core->token($string);
         $client = new Client(['auth' => [$this->core->getAppId(), $this->core->getPassword()]]);
+
         try {
             $response = $client->post($this->core->transactionDetailUrl(), [
                 'json' => [
@@ -100,9 +103,10 @@ class NchlService
                 ],
             ]);
             $body = $response->getBody();
-            if($body) {
+            if ($body) {
                 $body = json_decode($body);
             }
+
             return (object) [
                 'txnAmt' => $body->txnAmt,
                 'txnId' => $body->txnId,
@@ -114,7 +118,7 @@ class NchlService
                 'creditStatus' => $body->creditStatus,
                 'remarks' => $body->remarks,
                 'message' => $body->statusDesc,
-                'status' => $body->status == 'SUCCESS',
+                'status' => $body->status === 'SUCCESS',
             ];
         } catch (ClientException $e) {
             $message = $e->getResponse()->getReasonPhrase();
@@ -124,6 +128,7 @@ class NchlService
             } elseif (401 === $code) {
                 $message = 'Session expired!';
             }
+
             throw NchlException::clientError($this, $message);
         }
     }
