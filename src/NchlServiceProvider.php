@@ -2,8 +2,9 @@
 
 namespace YubarajShrestha\NCHL;
 
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Collection;
 use YubarajShrestha\NCHL\Services\NchlService;
 
 class NchlServiceProvider extends ServiceProvider
@@ -22,25 +23,32 @@ class NchlServiceProvider extends ServiceProvider
     /**
      * Bootstrap services.
      */
-    public function boot(NchlService $service)
+    public function boot()
     {
-        Blade::directive('nchl', function ($string) {
-            $config = config('nchl');
-            $template = "<form method='post' action='".$config['gateway']."'>";
-            $template .= "<input type='text' name='MERCHANTID' id='MERCHANTID' value='".$config['merchant_id']."'/>";
-            $template .= "<input type='text' name='APPID' id='APPID' value='".$config['app_id']."'/>";
-            $template .= "<input type='text' name='APPNAME' id='APPNAME' value='".$config['app_name']."'/>";
-            $template .= "<input type='text' name='TXNCRNCY' id='TXNCRNCY' value='".$config['txn_currency']."'/>";
-
-            return $template;
-        });
-
         $this->publishes([
-            __DIR__.'/Config/nchl.php' => config_path('nchl.php'),
-        ], 'nchl');
+            __DIR__.'/../config/nchl.php' => config_path('nchl.php')
+        ], 'config');
 
-        $this->app->singleton(NchlService::class, function ($app) use ($service) {
-            return $service;
-        });
+        // $this->publishes([
+        //     __DIR__.'/../database/migrations/create_connectips_table.php.stub' => $this->getMigrationFileName($filesystem),
+        // ], 'migrations');
+
+    }
+
+    /**
+     * Returns existing migration file if found, else uses the current timestamp.
+     *
+     * @param Filesystem $filesystem
+     * @return string
+     */
+    protected function getMigrationFileName(Filesystem $filesystem): string
+    {
+        $timestamp = date('Y_m_d_His');
+
+        return Collection::make($this->app->databasePath().DIRECTORY_SEPARATOR.'migrations'.DIRECTORY_SEPARATOR)
+            ->flatMap(function ($path) use ($filesystem) {
+                return $filesystem->glob($path.'*_create_connectips_table.php');
+            })->push($this->app->databasePath()."/migrations/{$timestamp}_create_connectips_table.php")
+            ->first();
     }
 }

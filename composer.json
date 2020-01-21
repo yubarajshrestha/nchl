@@ -22,7 +22,7 @@
             "YubarajShrestha\\NCHL\\": "src"
         },
         "files": [
-            "src/helpers.php"
+            "src/Helpers/helpers.php"
         ]
     },
     "autoload-dev": {

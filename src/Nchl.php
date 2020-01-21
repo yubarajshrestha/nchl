@@ -269,12 +269,14 @@ class Nchl
     protected function update(array $data = [])
     {
         $config = config('nchl');
-        foreach ($config as $key => $conf) {
-            $this->{$key} = $conf;
+        if(gettype($config) == 'array') {
+            foreach ($config as $key => $conf) {
+                $this->{$key} = $conf;
+            }
+            foreach ($data as $key => $value) {
+                $this->{$key} = $value;
+            }
+            $this->certificate = Storage::get('/public/certs/nchl.pfx');
         }
-        foreach ($data as $key => $value) {
-            $this->{$key} = $value;
-        }
-        $this->certificate = Storage::get('/public/certs/nchl.pfx');
     }
 }
