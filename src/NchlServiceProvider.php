@@ -16,12 +16,13 @@ class NchlServiceProvider extends ServiceProvider
         $this->app->bind('nchl', function () {
             return new NchlService();
         });
+        $this->app->make('YubarajShrestha\NCHL\Services\NchlService');
     }
 
     /**
      * Bootstrap services.
      */
-    public function boot()
+    public function boot(NchlService $service)
     {
         Blade::directive('nchl', function ($string) {
             $config = config('nchl');
@@ -37,5 +38,9 @@ class NchlServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/Config/nchl.php' => config_path('nchl.php'),
         ], 'nchl');
+
+        $this->app->singleton(NchlService::class, function ($app) use ($service) {
+            return $service;
+        });
     }
 }

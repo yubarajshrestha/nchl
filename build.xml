@@ -272,7 +272,7 @@
             <arg value="--log-junit" />
             <arg value="${basedir}/build/logs/junit.xml" />
 		</exec>
-	<property name="phpunit.done" value="true"/>
+		<property name="phpunit.done" value="true"/>
 	</target>
 
 	<target name="phpunit-no-coverage"

@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use YubarajShrestha\NCHL\Exceptions\NchlException;
 use YubarajShrestha\NCHL\Nchl;
+use GuzzleHttp\Psr7\Request;
 
 class NchlService
 {
@@ -48,24 +49,26 @@ class NchlService
     public function paymentValidate()
     {
         $string = "MERCHANTID={$this->core->getMerchantId()},APPID={$this->core->getAppId()},REFERENCEID={$this->core->getTxnId()},TXNAMT={$this->core->getTxnAmount()}";
-        // $string = "MERCHANTID={$this->core->getMerchantId()},APPID={$this->core->getAppId()},REFERENCEID={$this->core->getTxnId()},TXNAMT={$this->core->getTxnAmount()},TOKEN=TOKEN";
         $token = $this->core->token($string);
-        $client = new Client();
-
+        $client = new Client(['auth' => [$this->core->getAppId(), $this->core->getPassword()]]);
         try {
-            $response = $client->request('POST', $this->core->validationUrl(), [
-                'auth' => [$this->core->getAppId(), $this->core->getPassword()],
-                'form_params' => [
-                    'merchantId' => $this->core->getMerchantId(),
+            $response = $client->post($this->core->validationUrl(), [
+                'json' => [
                     'appId' => $this->core->getAppId(),
-                    'referenceId' => $this->core->getTxnId(),
                     'txnAmt' => $this->core->getTxnAmount(),
+                    'referenceId' => $this->core->getTxnId(),
+                    'merchantId' => $this->core->getMerchantId(),
                     'token' => $token,
                 ],
             ]);
-
-            return $response->getBody();
-            // TODO: Handle Payment Validation Response
+            $body = $response->getBody();
+            if($body) {
+                $body = json_decode($body);
+            }
+            return (object) [
+                'message' => $body->statusDesc,
+                'status' => $body->status == 'SUCCESS',
+            ];
         } catch (ClientException $e) {
             $message = $e->getResponse()->getReasonPhrase();
             $code = $e->getResponse()->getStatusCode();
@@ -74,7 +77,6 @@ class NchlService
             } elseif (401 === $code) {
                 $message = 'Session expired!';
             }
-
             throw NchlException::clientError($this, $message);
         }
     }
@@ -86,22 +88,34 @@ class NchlService
     {
         $string = "MERCHANTID={$this->core->getMerchantId()},APPID={$this->core->getAppId()},REFERENCEID={$this->core->getTxnId()},TXNAMT={$this->core->getTxnAmount()}";
         $token = $this->core->token($string);
-        $client = new Client();
-
+        $client = new Client(['auth' => [$this->core->getAppId(), $this->core->getPassword()]]);
         try {
-            $response = $client->request('POST', $this->core->getTransactionDetailUrl(), [
-                'auth' => [$this->core->getAppId(), $this->core->getPassword()],
-                'form_params' => [
-                    'merchantId' => $this->core->getMerchantId(),
+            $response = $client->post($this->core->transactionDetailUrl(), [
+                'json' => [
                     'appId' => $this->core->getAppId(),
-                    'referenceId' => $this->core->getTxnId(),
                     'txnAmt' => $this->core->getTxnAmount(),
+                    'referenceId' => $this->core->getTxnId(),
+                    'merchantId' => $this->core->getMerchantId(),
                     'token' => $token,
                 ],
             ]);
-
-            return $response->getBody();
-            // TODO: Handle Transaction Detail Response
+            $body = $response->getBody();
+            if($body) {
+                $body = json_decode($body);
+            }
+            return (object) [
+                'txnAmt' => $body->txnAmt,
+                'txnId' => $body->txnId,
+                'referenceId' => $body->referenceId,
+                'txnDate' => $body->txnDate,
+                'refId' => $body->refId,
+                'chargeAmt' => $body->chargeAmt,
+                'chargeLiability' => $body->chargeLiability,
+                'creditStatus' => $body->creditStatus,
+                'remarks' => $body->remarks,
+                'message' => $body->statusDesc,
+                'status' => $body->status == 'SUCCESS',
+            ];
         } catch (ClientException $e) {
             $message = $e->getResponse()->getReasonPhrase();
             $code = $e->getResponse()->getStatusCode();
@@ -110,7 +124,6 @@ class NchlService
             } elseif (401 === $code) {
                 $message = 'Session expired!';
             }
-
             throw NchlException::clientError($this, $message);
         }
     }
