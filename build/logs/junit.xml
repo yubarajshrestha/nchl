@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="NCHL Test Suit" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="0.001733">
+    <testsuite name="YubarajShrestha\Tests\ExampleTest" file="/Users/meyubaraj/Sites/packages/packages/yubarajshrestha/nchl/tests/ExampleTest.php" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="0.001733">
+      <testcase name="testBasicTest" class="YubarajShrestha\Tests\ExampleTest" classname="YubarajShrestha.Tests.ExampleTest" file="/Users/meyubaraj/Sites/packages/packages/yubarajshrestha/nchl/tests/ExampleTest.php" line="14" assertions="1" time="0.001733"/>
+    </testsuite>
+  </testsuite>
+</testsuites>

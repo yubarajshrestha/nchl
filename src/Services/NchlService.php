@@ -48,24 +48,28 @@ class NchlService
     public function paymentValidate()
     {
         $string = "MERCHANTID={$this->core->getMerchantId()},APPID={$this->core->getAppId()},REFERENCEID={$this->core->getTxnId()},TXNAMT={$this->core->getTxnAmount()}";
-        // $string = "MERCHANTID={$this->core->getMerchantId()},APPID={$this->core->getAppId()},REFERENCEID={$this->core->getTxnId()},TXNAMT={$this->core->getTxnAmount()},TOKEN=TOKEN";
         $token = $this->core->token($string);
-        $client = new Client();
+        $client = new Client(['auth' => [$this->core->getAppId(), $this->core->getPassword()]]);
 
         try {
-            $response = $client->request('POST', $this->core->validationUrl(), [
-                'auth' => [$this->core->getAppId(), $this->core->getPassword()],
-                'form_params' => [
-                    'merchantId' => $this->core->getMerchantId(),
+            $response = $client->post($this->core->validationUrl(), [
+                'json' => [
                     'appId' => $this->core->getAppId(),
-                    'referenceId' => $this->core->getTxnId(),
                     'txnAmt' => $this->core->getTxnAmount(),
+                    'referenceId' => $this->core->getTxnId(),
+                    'merchantId' => $this->core->getMerchantId(),
                     'token' => $token,
                 ],
             ]);
+            $body = $response->getBody();
+            if ($body) {
+                $body = json_decode($body);
+            }
 
-            return $response->getBody();
-            // TODO: Handle Payment Validation Response
+            return (object) [
+                'message' => $body->statusDesc,
+                'status' => $body->status === 'SUCCESS',
+            ];
         } catch (ClientException $e) {
             $message = $e->getResponse()->getReasonPhrase();
             $code = $e->getResponse()->getStatusCode();
@@ -86,22 +90,36 @@ class NchlService
     {
         $string = "MERCHANTID={$this->core->getMerchantId()},APPID={$this->core->getAppId()},REFERENCEID={$this->core->getTxnId()},TXNAMT={$this->core->getTxnAmount()}";
         $token = $this->core->token($string);
-        $client = new Client();
+        $client = new Client(['auth' => [$this->core->getAppId(), $this->core->getPassword()]]);
 
         try {
-            $response = $client->request('POST', $this->core->getTransactionDetailUrl(), [
-                'auth' => [$this->core->getAppId(), $this->core->getPassword()],
-                'form_params' => [
-                    'merchantId' => $this->core->getMerchantId(),
+            $response = $client->post($this->core->transactionDetailUrl(), [
+                'json' => [
                     'appId' => $this->core->getAppId(),
-                    'referenceId' => $this->core->getTxnId(),
                     'txnAmt' => $this->core->getTxnAmount(),
+                    'referenceId' => $this->core->getTxnId(),
+                    'merchantId' => $this->core->getMerchantId(),
                     'token' => $token,
                 ],
             ]);
+            $body = $response->getBody();
+            if ($body) {
+                $body = json_decode($body);
+            }
 
-            return $response->getBody();
-            // TODO: Handle Transaction Detail Response
+            return (object) [
+                'txnAmt' => $body->txnAmt,
+                'txnId' => $body->txnId,
+                'referenceId' => $body->referenceId,
+                'txnDate' => $body->txnDate,
+                'refId' => $body->refId,
+                'chargeAmt' => $body->chargeAmt,
+                'chargeLiability' => $body->chargeLiability,
+                'creditStatus' => $body->creditStatus,
+                'remarks' => $body->remarks,
+                'message' => $body->statusDesc,
+                'status' => $body->status === 'SUCCESS',
+            ];
         } catch (ClientException $e) {
             $message = $e->getResponse()->getReasonPhrase();
             $code = $e->getResponse()->getStatusCode();
