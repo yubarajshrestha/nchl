@@ -4,6 +4,8 @@ namespace YubarajShrestha\NCHL;
 
 use Illuminate\Support\Facades\Storage;
 use YubarajShrestha\NCHL\Exceptions\NchlException;
+use phpseclib3\File\X509;
+
 
 class Nchl
 {
@@ -225,23 +227,13 @@ class Nchl
     public function token(string $string = null): string
     {
         $this->validate();
-        // if (!$string) {
-        //     $string = "MERCHANTID={$this->merchant_id},APPID={$this->app_id},APPNAME={$this->app_name},TXNID={$this->txn_id},TXNAMT={$this->txn_amount}";
-        // }
-        // if(!$string) $string = "MERCHANTID={$this->merchant_id},APPID={$this->app_id},APPNAME={$this->app_name},TXNID={$this->txn_id},TXNDATE={$this->txn_date},TXNCRNCY={$this->txn_currency},TXNAMT={$this->txn_amount},REFERENCEID={$this->reference_id},REMARKS={$this->remarks},PARTICULARS={$this->particulars},TOKEN=TOKEN";
         if (!$string) {
             $string = "MERCHANTID={$this->merchant_id},APPID={$this->app_id},APPNAME={$this->app_name},TXNID={$this->txn_id},TXNDATE={$this->txn_date},TXNCRNCY={$this->txn_currency},TXNAMT={$this->txn_amount},REFERENCEID={$this->reference_id},REMARKS={$this->remarks},PARTICULARS={$this->particulars},TOKEN=TOKEN";
         }
 
-        $private_key = null;
+      $private_key = null;
 
-        if (openssl_pkcs12_read($this->certificate, $cert_info, '123')) {
-            $private_key = openssl_pkey_get_private($cert_info['pkey']);
-        // $array = openssl_pkey_get_details($private_key);
-            // print_r($array);
-        } else {
-            throw NchlException::certificateError($this, 'Unable to read certificate.');
-        }
+        $private_key = openssl_pkey_get_private(file_get_contents(storage_path('certs/nchl.pem')));
 
         if (openssl_sign($string, $signature, $private_key, 'sha256WithRSAEncryption')) {
             $hash = base64_encode($signature);
@@ -249,7 +241,6 @@ class Nchl
         } else {
             throw NchlException::certificateError($this, 'Unable to sign certificate.');
         }
-
         return $hash;
     }
 
